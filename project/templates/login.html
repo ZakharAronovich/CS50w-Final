@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+
+{% block body %}
+    <form method="POST" class="login-form">
+        {% csrf_token %}
+        {{ form }}
+        <button class="form-button">Log In</button>
+    </form>
+{% endblock %}

@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
 
 {% block body %}
-    <h1>Hello, world!</h1>
+    <h1>Hello, {{ request.user.username }}</h1>
 {% endblock %}
