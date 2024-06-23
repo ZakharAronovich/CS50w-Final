@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+
+{% block body %}
+    <form method="POST" class="registration-form">
+        {% csrf_token %}
+        {{ form }}
+        <button class="form-button">Register</button>
+    </form>
+{% endblock %}
