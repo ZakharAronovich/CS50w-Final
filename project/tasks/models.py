@@ -18,12 +18,20 @@ class Teacher(models.Model):
     )
 
 
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name}"
+
+
 class Student(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, 
         default=None, related_name="student_by_user"
     )
     teachers = models.ManyToManyField(Teacher, related_name="students")
+
+
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name}"
 
 
 class Task(models.Model):

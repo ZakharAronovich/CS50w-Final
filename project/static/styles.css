@@ -1,10 +1,27 @@
 :root {
     --background-color: gray;
     --text-color: black;
+    --border-color: black;
 }
 
 body {
     margin: 0px;
+}
+
+input:focus {
+    outline: none;
+}
+
+textarea {
+    resize: none;
+}
+
+textarea:focus {
+    outline: none;
+}
+
+select:focus {
+    outline: none;
 }
 
 .navbar {
@@ -31,4 +48,56 @@ body {
 .nav-item > a {
     text-decoration: none;
     color: var(--text-color);
+}
+
+.form-button {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 10px 15px;
+}
+
+.task-form-dialog {
+    width: 80%;
+    background-color: var(--background-color);
+    padding: 0;
+    border-radius: 50px; 
+}
+
+.task-form-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4.5rem 3.5rem;
+}
+
+.task-form-wrapper > button {
+    margin-top: 20px;
+}
+
+.task-form-wrapper > form {
+    width: 80%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.task-form-wrapper > form > textarea {
+    grid-column: span 2;
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.task-form-wrapper > form > select {
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.flatpickr-wrapper > input {
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
 }

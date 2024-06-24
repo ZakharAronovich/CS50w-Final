@@ -1,12 +1,18 @@
 from django.shortcuts import render, redirect
 from .models import User, Teacher, Student
-from .forms import RegistrationForm
+from .forms import RegistrationForm, TaskCreationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 
 
 def index(request):
-    return render(request, 'index.html')
+    form = TaskCreationForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            form.instance.teacher = Teacher.objects.get(user=request.user)
+            form.save()
+    context = {"form": form}
+    return render(request, "index.html", context)
 
 
 def register(request):

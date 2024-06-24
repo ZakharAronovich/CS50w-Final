@@ -35,6 +35,7 @@ AUTH_USER_MODEL = 'tasks.User'
 # Application definition
 
 INSTALLED_APPS = [
+    'widget_tweaks',
     'tasks',
     'django.contrib.admin',
     'django.contrib.auth',
