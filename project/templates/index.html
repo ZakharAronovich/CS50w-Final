@@ -1,4 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
+    {% if request.user.role == "TC" %}
+        {% include "newtask.html" %}
+    {% endif %}
 {% endblock %}

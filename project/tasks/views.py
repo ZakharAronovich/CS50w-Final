@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
-from .models import User, Teacher, Student
-from .forms import RegistrationForm, TaskCreationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
+
+from .models import User, Teacher, Student, Group
+from .forms import RegistrationForm, TaskCreationForm
+from .decorators import authenticated_only, unauthenticated_only, teachers_only
 
 
 def index(request):
@@ -15,6 +17,14 @@ def index(request):
     return render(request, "index.html", context)
 
 
+@teachers_only
+def groups(request):
+    groups = Group.objects.all()
+    context = {"groups": groups}
+    return render(request, "groups.html", context)
+
+
+@unauthenticated_only
 def register(request):
     form = RegistrationForm(request.POST or None)
     
@@ -54,6 +64,7 @@ def register(request):
     return render(request, "register.html", context)
 
 
+@unauthenticated_only
 def login_view(request):
     form = AuthenticationForm(request.POST or None)
 
@@ -75,6 +86,7 @@ def login_view(request):
     return render(request, "login.html", context)
 
 
+@authenticated_only
 def logout_view(request):
     logout(request)
     return redirect("index")

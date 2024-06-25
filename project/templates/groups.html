@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <h1>Groups</h1>
+    <div class="groups">
+        {% for group in groups %}
+            <div class="group">
+                {{ group.title }}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
