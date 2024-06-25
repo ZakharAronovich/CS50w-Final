@@ -43,7 +43,9 @@
             {% endif %}
         </div>
     </div>
-    {% include "newtask.html" %}
+    {% if request.user.role == "TC" %}
+        {% include "newtask.html" %}
+    {% endif %}
     {% block body %}
     {% endblock %}
 </body>

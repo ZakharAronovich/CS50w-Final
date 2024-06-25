@@ -5,7 +5,7 @@
     <div class="task-form-wrapper">
         <form method="POST" id="task-form">
             {% csrf_token %}
-            {% render_field form.students %}
+            {% render_field form.groups %}
             {% render_field form.due_to type="datetime-local" %}
             {% render_field form.text %}
         </form>
