@@ -1,10 +1,22 @@
 {% extends "layout.html" %}
+{% load widget_tweaks %}
 
 
 {% block body %}
-    <form method="POST" class="registration-form">
-        {% csrf_token %}
-        {{ form }}
-        <button class="form-button">Register</button>
-    </form>
+    <div class="registration-form-wrapper">
+        <h1>Register</h1>
+        <form method="POST" class="registration-form">
+            {% csrf_token %}
+            <div class="registration-form-grid">
+                {% render_field form.first_name placeholder="First Name" %}
+                {% render_field form.last_name placeholder="Last Name" %}
+                {% render_field form.email placeholder="Email" %}
+                {% render_field form.username placeholder="Username" %}
+                {% render_field form.password1 placeholder="Password" %}
+                {% render_field form.password2 placeholder="Confirmation" %}
+            </div>
+            {% render_field form.role %}
+            <button class="form-button">Register</button>
+        </form>
+    </div>
 {% endblock %}
