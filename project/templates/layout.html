@@ -21,7 +21,7 @@
                         New Task
                     </div>
                 {% elif request.user.role == "ST" %}
-                    <a href="#">My Tasks</a>
+                    <a href="{% url 'tasks' %}">My Tasks</a>
                 {% endif %}
             </div>
             <div class="nav-item">

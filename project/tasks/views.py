@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 
-from .models import User, Teacher, Student, Group
+from .models import User, Teacher, Student, Group, Task
 from .forms import RegistrationForm, TaskCreationForm
 from .decorators import authenticated_only, unauthenticated_only, teachers_only
 
@@ -22,6 +22,16 @@ def groups(request):
     groups = Group.objects.all()
     context = {"groups": groups}
     return render(request, "groups.html", context)
+
+
+def tasks(request):
+    if request.user.role == "TC":
+        tasks = Task.objects.all()
+    elif request.user.role == "ST":
+        student = Student.objects.get(user=request.user)
+        tasks = student.group.tasks_by_group
+    context = {"tasks": tasks}
+    return render(request, "tasks.html", context)
 
 
 @unauthenticated_only

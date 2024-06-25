@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+
+{% block body %}
+    {% if request.user.role == "TC" %}
+        <h1>All tasks</h1>
+    {% elif request.user.role == "ST" %}
+        <h1>My tasks</h1>
+    {% endif %}
+    <div class="tasks">
+        {% for task in tasks.all %}
+            <div class="task">
+                {{ task.text }}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
