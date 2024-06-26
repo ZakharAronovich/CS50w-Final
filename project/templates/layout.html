@@ -19,13 +19,11 @@
                 {% if request.user.role == "TC" %}
                     <div class="nav-item-button" onclick="toggleTaskDialog()">
                         New Task
-                    </div>
-                {% elif request.user.role == "ST" %}
-                    <a href="{% url 'tasks' %}">My Tasks</a>
+                    </div>     
                 {% endif %}
             </div>
             <div class="nav-item">
-                <a href="#">3</a>
+                <a href="{% url 'tasks' %}">Tasks</a>
             </div>
         </div>
         <div class="nav-items-right">

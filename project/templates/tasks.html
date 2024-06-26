@@ -2,15 +2,19 @@
 
 
 {% block body %}
-    {% if request.user.role == "TC" %}
-        <h1>All tasks</h1>
-    {% elif request.user.role == "ST" %}
-        <h1>My tasks</h1>
-    {% endif %}
+    <h1>
+        {% if request.user.role == "TC" %}
+            All tasks
+        {% elif request.user.role == "ST" %}
+            My tasks
+        {% endif %}
+    </h1>
     <div class="tasks">
         {% for task in tasks.all %}
             <div class="task">
-                {{ task.text }}
+                <div class="task-subject">{{ task.get_subject_display }}</div>
+                <div class="task-text">{{ task.text }}</div>
+                <div class="task-time-left">{{ task.time_left }}</div>
             </div>
         {% endfor %}
     </div>

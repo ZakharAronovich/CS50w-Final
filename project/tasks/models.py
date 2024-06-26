@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils import timesince
 
 
 class User(AbstractUser):
@@ -50,10 +51,34 @@ class Student(models.Model):
 
 
 class Task(models.Model):
+    SUBJECT_CHOICES = (
+        ("ALG", "Algebra"),
+        ("ART", "Art"),
+        ("BIO", "Biology"),
+        ("CHE", "Chemistry"),
+        ("ENG", "English"),
+        ("GEO", "Geography"),
+        ("HIS", "History"),
+        ("PE", "PE")
+    )
+
     group = models.ForeignKey(
         Group, on_delete=models.CASCADE, 
         related_name="tasks_by_group"
     )
+    subject = models.CharField(
+        max_length=3, choices=SUBJECT_CHOICES, 
+        default=None, null=True,
+    )
     datetime = models.DateTimeField(auto_now_add=True)
     due_to = models.DateTimeField()
     text = models.TextField(max_length=1024)
+
+
+    @property
+    def time_left(self):
+        value = str(timesince.timeuntil(self.due_to))
+        try:
+            return f"{value[:value.index(",")]} left"
+        except:
+            return f"{value} left"

@@ -24,6 +24,7 @@ def groups(request):
     return render(request, "groups.html", context)
 
 
+@authenticated_only
 def tasks(request):
     if request.user.role == "TC":
         tasks = Task.objects.all()

@@ -2,6 +2,7 @@
     --background-color: gray;
     --text-color: black;
     --border-color: black;
+    --secondary-text-color: gray;
 }
 
 body {
@@ -169,4 +170,27 @@ select:focus {
 
 .registration-form > button {
     margin-top: 20px;
+}
+
+.tasks {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-gap: 1rem;
+    padding: 0rem 1rem;
+}
+
+.task {
+    padding: 1rem;
+    font-size: 1.2rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+}
+
+.task-text {
+    padding: 1rem 0rem;
+}
+
+.task-time-left {
+    font-size: 1rem;
+    color: var(--secondary-text-color);
 }
