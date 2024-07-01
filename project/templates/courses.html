@@ -2,7 +2,12 @@
 
 
 {% block body %}
-    <h1>Courses</h1>
+    <h1 class="page-title">All courses</h1>
+    {% if message %}
+        <div class="message">
+            {{ message }}
+        </div>
+    {% endif %}
     <div class="courses">
         {% for course in courses %}
             <div class="course">

@@ -2,7 +2,7 @@
 
 
 {% block body %}
-    <h1>
+    <h1 class="page-title">
         {% if request.user.role == "TC" %}
             All tasks
         {% elif request.user.role == "ST" %}
@@ -10,7 +10,7 @@
         {% endif %}
     </h1>
     <div class="tasks">
-        {% for task in tasks.all %}
+        {% for task in tasks %}
             <div class="task">
                 <div class="task-subject">{{ task.course.get_subject_display }}</div>
                 <div class="task-text">{{ task.text }}</div>

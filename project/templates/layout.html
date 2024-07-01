@@ -15,22 +15,25 @@
             <div class="nav-item">
                 <a href="{% url 'index' %}">Home</a>
             </div>
-            <div class="nav-item">
-                {% if request.user.role == "TC" %}
-                    <div class="nav-item-button" onclick="toggleTaskDialog()">
-                        New Task
-                    </div>     
-                {% endif %}
-            </div>
-            <div class="nav-item">
-                <a href="{% url 'courses' %}">Courses</a>
-            </div>
+            {% if request.user.role == "ST" %}
+                <div class="nav-item">
+                    <a href="{% url 'courses' %}">Courses</a>
+                </div>
+            {% endif%}
             <div class="nav-item">
                 <a href="{% url 'tasks' %}">Tasks</a>
             </div>
         </div>
         <div class="nav-items-right">
+            {% if request.user.role == "TC" %}
+                <div class="nav-item">
+                    <a href="{% url 'newtask' %}">Create</a>
+                </div>
+            {% endif %}
             {% if request.user.is_authenticated %}
+                <div class="nav-item">
+                    <a href="{% url 'hub' %}">{{ request.user.username }}'s Hub</a>
+                </div>
                 <div class="nav-item">
                     <a href="{% url 'logout' %}">Log Out</a>
                 </div>

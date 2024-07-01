@@ -59,6 +59,10 @@ select:focus {
     color: var(--text-color);
 }
 
+.page-title {
+    padding: 1rem;
+}
+
 .form-button {
     background-color: white;
     border: 1px solid var(--border-color);
@@ -66,42 +70,28 @@ select:focus {
     padding: 10px 15px;
 }
 
-.task-form-dialog {
-    width: 80%;
-    background-color: var(--background-color);
-    padding: 0;
-    border-radius: 50px; 
-}
-
-.task-form-wrapper {
+.task-form-div {
+    position: fixed;
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 4.5rem 3.5rem;
+    justify-content: center;
 }
 
-.task-form-wrapper > button {
-    margin-top: 20px;
+.task-form-div > button {
+    margin-top: 1rem;
 }
 
-.task-form-wrapper > form {
-    width: 80%;
+#task-form {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
 }
 
-.task-form-wrapper > form > textarea {
+#task-form > textarea {
     grid-column: span 2;
-    border: 1px solid var(--border-color);
-    border-radius: 15px;
-    padding: 10px;
-}
-
-.task-form-wrapper > form > select {
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    padding: 5px;
 }
 
 .flatpickr-wrapper > input {
@@ -186,6 +176,13 @@ select:focus {
     border-radius: 10px;
 }
 
+#newtask {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
 .task-text {
     padding: 1rem 0rem;
 }
@@ -207,4 +204,8 @@ select:focus {
     font-size: 1.2rem;
     border: 1px solid var(--border-color);
     border-radius: 10px;
+}
+
+.errorlist {
+    list-style-type: none;
 }

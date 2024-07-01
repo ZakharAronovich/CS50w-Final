@@ -4,19 +4,11 @@ from django.contrib.auth.forms import AuthenticationForm
 
 from .models import User, Teacher, Student, Course, Task
 from .forms import RegistrationForm, TaskCreationForm
-from .decorators import authenticated_only, unauthenticated_only, teachers_only
+from .decorators import authenticated_only, unauthenticated_only, teachers_only, students_only
 
 
 def index(request):
-    form = TaskCreationForm(request.POST or None)
-    if request.method == "POST":
-        if form.is_valid():
-            form.instance.teacher = Teacher.objects.get(user=request.user)
-            form.save()
-        else:
-            return render(request, "index.html", {"form": form})
-    context = {"form": form}
-    return render(request, "index.html", context)
+    return render(request, "index.html")
 
 
 @teachers_only
@@ -29,18 +21,59 @@ def courses(request):
 @authenticated_only
 def tasks(request):
     if request.user.role == "TC":
-        tasks = Task.objects.all()
+        teacher = Teacher.objects.get(user=request.user)
+        courses = Course.objects.filter(teacher=teacher)
     elif request.user.role == "ST":
         student = Student.objects.get(user=request.user)
-        tasks = student.course.tasks_by_course
+        courses = student.courses.all()
+    
+    tasks = Task.objects.filter(course__in=courses)
     context = {"tasks": tasks}
     return render(request, "tasks.html", context)
 
 
+@students_only
 def courses(request):
     courses = Course.objects.all()
-    context = {"courses": courses}
+    student = Student.objects.get(user=request.user)
+    context = {"courses": courses, "student": student}
     return render(request, "courses.html", context)
+
+
+@students_only
+def enrollment(request, course_id):
+    student = Student.objects.get(user=request.user)
+    course = Course.objects.get(pk=course_id)
+   
+    if course in student.courses.all():
+        student.courses.remove(course)
+    else:
+        student.courses.add(course)
+    
+    student.save()
+    return render(request, "courses.html")
+
+
+@teachers_only
+def newtask(request):
+    form = TaskCreationForm(request.POST or None)
+    
+    if request.method == "POST" and form.is_valid():
+        form.instance.teacher = Teacher.objects.get(user=request.user)
+        form.save()
+        return render(request, "tasks.html", context)
+    
+    context = {"form": form}
+    return render(request, "newtask.html", context)
+
+
+@authenticated_only
+def hub(request):
+    if request.user.role == "TC":
+        pass
+    elif request.user.role == "ST":
+        pass
+    return render(request, "hub.html")
 
 
 @unauthenticated_only

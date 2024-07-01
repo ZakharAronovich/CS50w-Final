@@ -28,3 +28,14 @@ def teachers_only(view_func):
         else:
             return view_func(request, *args, **kwargs)
     return wrapper
+
+
+def students_only(view_func):
+    def wrapper(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("login")
+        elif request.user.role != "ST":
+            return redirect("index")
+        else:
+            return view_func(request, *args, **kwargs)
+    return wrapper

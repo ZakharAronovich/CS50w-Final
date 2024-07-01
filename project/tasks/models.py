@@ -9,7 +9,7 @@ def deadline_validator(value):
 
     # Chosen deadline is in the past
     if until_deadline.startswith("0"):
-        raise ValidationError("Deadline must be in future.")
+        raise ValidationError("The deadline must be in the future.")
     
 
 class User(AbstractUser):

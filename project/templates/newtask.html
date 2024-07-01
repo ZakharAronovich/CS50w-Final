@@ -1,8 +1,9 @@
+{% extends "layout.html" %}
 {% load widget_tweaks %}
 
-
-<dialog class="task-form-dialog">
-    <div class="task-form-wrapper">
+{% block body %}
+    <div class="task-form-div">
+        <h1 class="page-title">New Task</h1>
         <form method="POST" id="task-form">
             {% csrf_token %}
             {% render_field form.course %}
@@ -11,4 +12,4 @@
         </form>
         <button class="form-button" form="task-form">Create</button>
     </div>
-</dialog>
+{% endblock %}

@@ -5,7 +5,8 @@ flatpickr("input[type=datetime-local]",
         dateFormat: "Y-m-d H:i",
         altInput: true,
         altFormat: "F j, Y (h:S K)",
-        defaultDate: "today", 
+        defaultDate: Date.now(),
+        minDate: Date.now(),
         static : true,       
     }
 );
