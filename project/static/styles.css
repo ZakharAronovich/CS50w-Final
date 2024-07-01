@@ -194,3 +194,17 @@ select:focus {
     font-size: 1rem;
     color: var(--secondary-text-color);
 }
+
+.courses {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-gap: 1rem;
+    padding: 0rem 1rem;
+}
+
+.course {
+    padding: 1rem;
+    font-size: 1.2rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+}

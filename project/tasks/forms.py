@@ -12,4 +12,4 @@ class RegistrationForm(UserCreationForm):
 class TaskCreationForm(ModelForm):
     class Meta:
         model = Task
-        fields = ["group", "due_to", "text"]
+        fields = ["course", "deadline", "text"]

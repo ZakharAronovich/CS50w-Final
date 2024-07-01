@@ -10,6 +10,7 @@ flatpickr("input[type=datetime-local]",
     }
 );
 
+
 // Toggle the task creation form dialog
 function toggleTaskDialog() {
     const taskDialog = document.querySelector(".task-form-dialog");
@@ -20,7 +21,7 @@ function toggleTaskDialog() {
 
     // Close the dialog once anything rather than the dialog is clicked
     taskDialog.addEventListener("click", (e) => {
-        if (!dialogWrapper.contains(e.target))  {
+        if (!dialogWrapper.contains(e.target)) {
             taskDialog.close();
         }
     })

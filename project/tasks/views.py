@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 
-from .models import User, Teacher, Student, Group, Task
+from .models import User, Teacher, Student, Course, Task
 from .forms import RegistrationForm, TaskCreationForm
 from .decorators import authenticated_only, unauthenticated_only, teachers_only
 
@@ -13,15 +13,17 @@ def index(request):
         if form.is_valid():
             form.instance.teacher = Teacher.objects.get(user=request.user)
             form.save()
+        else:
+            return render(request, "index.html", {"form": form})
     context = {"form": form}
     return render(request, "index.html", context)
 
 
 @teachers_only
-def groups(request):
-    groups = Group.objects.all()
-    context = {"groups": groups}
-    return render(request, "groups.html", context)
+def courses(request):
+    courses = Course.objects.all()
+    context = {"courses": courses}
+    return render(request, "courses.html", context)
 
 
 @authenticated_only
@@ -30,9 +32,15 @@ def tasks(request):
         tasks = Task.objects.all()
     elif request.user.role == "ST":
         student = Student.objects.get(user=request.user)
-        tasks = student.group.tasks_by_group
+        tasks = student.course.tasks_by_course
     context = {"tasks": tasks}
     return render(request, "tasks.html", context)
+
+
+def courses(request):
+    courses = Course.objects.all()
+    context = {"courses": courses}
+    return render(request, "courses.html", context)
 
 
 @unauthenticated_only

@@ -12,7 +12,7 @@
     <div class="tasks">
         {% for task in tasks.all %}
             <div class="task">
-                <div class="task-subject">{{ task.get_subject_display }}</div>
+                <div class="task-subject">{{ task.course.get_subject_display }}</div>
                 <div class="task-text">{{ task.text }}</div>
                 <div class="task-time-left">{{ task.time_left }}</div>
             </div>

@@ -1,7 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timesince
+from django.core.exceptions import ValidationError
 
+
+def deadline_validator(value):
+    until_deadline = str(timesince.timeuntil(value))
+
+    # Chosen deadline is in the past
+    if until_deadline.startswith("0"):
+        raise ValidationError("Deadline must be in future.")
+    
 
 class User(AbstractUser):
     ROLE_CHOICES = (
@@ -23,34 +32,7 @@ class Teacher(models.Model):
         return f"{self.user.first_name} {self.user.last_name}"
 
 
-class Group(models.Model):
-    title = models.CharField(max_length=128, default=None)
-    teacher = models.ForeignKey(
-        Teacher, on_delete=models.PROTECT, 
-        related_name="groups_by_teacher"
-    )
-
-    def __str__(self):
-        return self.title
-
-
-class Student(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, 
-        default=None, related_name="student_by_user"
-    )
-    group = models.ForeignKey(
-        Group, on_delete=models.PROTECT,
-        related_name="students_by_group",
-        blank=True, null=True,
-    )
-
-
-    def __str__(self):
-        return f"{self.user.first_name} {self.user.last_name}"
-
-
-class Task(models.Model):
+class Course(models.Model):
     SUBJECT_CHOICES = (
         ("ALG", "Algebra"),
         ("ART", "Art"),
@@ -62,22 +44,46 @@ class Task(models.Model):
         ("PE", "PE")
     )
 
-    group = models.ForeignKey(
-        Group, on_delete=models.CASCADE, 
-        related_name="tasks_by_group"
+    subject = models.CharField(max_length=3, default=None, choices=SUBJECT_CHOICES)
+    description = models.TextField(max_length=512, default=None, null=True)
+    teacher = models.ForeignKey(
+        Teacher, on_delete=models.PROTECT, 
+        related_name="courses_by_teacher"
     )
-    subject = models.CharField(
-        max_length=3, choices=SUBJECT_CHOICES, 
-        default=None, null=True,
+
+
+    def __str__(self):
+        return self.get_subject_display()
+
+
+class Student(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, 
+        default=None, related_name="student_by_user"
+    )
+    courses = models.ManyToManyField(
+        Course,
+        related_name="students_by_course",
+    )
+
+
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name}"
+
+
+class Task(models.Model):
+    course = models.ForeignKey(
+        Course, on_delete=models.CASCADE, 
+        related_name="tasks_by_course"
     )
     datetime = models.DateTimeField(auto_now_add=True)
-    due_to = models.DateTimeField()
+    deadline = models.DateTimeField(validators=[deadline_validator])
     text = models.TextField(max_length=1024)
 
 
     @property
     def time_left(self):
-        value = str(timesince.timeuntil(self.due_to))
+        value = str(timesince.timeuntil(self.deadline))
         try:
             return f"{value[:value.index(",")]} left"
         except:
