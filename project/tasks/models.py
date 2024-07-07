@@ -4,21 +4,15 @@ from django.utils import timesince
 from django.core.exceptions import ValidationError
 
 
-def deadline_validator(value):
-    until_deadline = str(timesince.timeuntil(value))
-
-    # Chosen deadline is in the past
-    if until_deadline.startswith("0"):
-        raise ValidationError("The deadline must be in the future.")
-    
-
 class User(AbstractUser):
     ROLE_CHOICES = (
         ("TC", "Teacher"),
         ("ST", "Student"),
     )
 
+    image = models.ImageField(null=True, blank=True, upload_to="images/")
     role = models.CharField(max_length=2, choices=ROLE_CHOICES, default=None, null=True)
+    bio = models.TextField(max_length=256, blank=True, null=True)
 
 
 class Teacher(models.Model):
@@ -77,7 +71,7 @@ class Task(models.Model):
         related_name="tasks_by_course"
     )
     datetime = models.DateTimeField(auto_now_add=True)
-    deadline = models.DateTimeField(validators=[deadline_validator])
+    deadline = models.DateTimeField()
     text = models.TextField(max_length=1024)
 
 

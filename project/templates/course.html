@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+
+{% block body %}
+    <h1 class="page-title">{{ course.get_subject_display }}</h1>
+    <div class="course-page-description">
+        {{ course.description }}    
+    </div>
+
+    <a class="hide-link" href="{% url 'enrollment' course_id=course.id %}">
+        <button class="enrollment-button">
+            {% if course in request.user.student_by_user.first.courses.all %}
+                Unernroll
+            {% else %}
+                Enroll
+            {% endif %}
+        </button>
+    </a>
+
+    <div class="course-page-teacher">
+        Taught by: <a class="hide-link" href="{% url 'profile' user_id=course.teacher.user.id %}">{{ course.teacher }}</a>
+    </div> 
+    
+{% endblock %}

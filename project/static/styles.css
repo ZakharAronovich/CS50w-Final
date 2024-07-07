@@ -33,30 +33,9 @@ select:focus {
     outline: none;
 }
 
-.navbar {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    background-color: var(--background-color);
-}
-
-.nav-items-left {
-    display: flex;
-    flex-direction: row;
-}
-
-.nav-items-right {
-    display: flex;
-    flex-direction: row;
-}
-
-.nav-item {
-    margin: 1rem 1rem;
-}
-
-.nav-item > a {
-    text-decoration: none;
+.hide-link {
     color: var(--text-color);
+    text-decoration: none;
 }
 
 .page-title {
@@ -209,3 +188,50 @@ select:focus {
 .errorlist {
     list-style-type: none;
 }
+
+.course-page-description {
+    margin: 0px 1rem;
+    font-size: 1.25rem;
+}
+
+.course-page-teacher {
+    margin: 0px 1rem;
+}
+
+.enrollment-button {
+    box-shadow: none;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 1rem 1rem;
+}
+
+.profile {
+    display: flex;
+    flex-direction: row;
+    margin: 1rem 1rem;
+}
+
+.profile-image {
+    max-width: 10rem;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.profile-text {
+    display: flex;
+    flex-direction: column;
+    margin: 0 1rem;
+}
+
+.profile-text-name {
+    font-size: 2rem;
+}
+
+.profile-text-bio {
+    font-size: 1.5rem;
+    color: var(--secondary-text-color);
+}
+

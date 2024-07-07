@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+
+{% block body %}
+
+    <div class="profile">
+        <img class="profile-image" src="{{ user.image.url }}">
+        <div class="profile-text">
+            <div class="profile-text-name">
+                {{ user.first_name.capitalize }}
+                {{ user.last_name.capitalize }}
+            </div>
+            <div class="profile-text-bio">
+                {% if user.bio %}
+                    {{ user.bio }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% if request.user == user %}
+    
+        <h2 class="page-title">Courses</h2>
+        <div class="courses">
+            {% for course in courses %}
+                <a class="hide-link" href="{% url 'course' course_id=course.id %}">
+                    <div class="course">
+                        <div class="course-subject">{{ course.get_subject_display }}</div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+
+        {% if tasks %}
+            <h2 class="page-title">Tasks</h2>
+            <div class="tasks">
+            {% for task in tasks %}
+                <div class="task">
+                    <div class="task-subject">{{ task.course.get_subject_display }}</div>
+                    <div class="task-text">{{ task.text }}</div>
+                    <div class="task-time-left">{{ task.time_left }}</div>
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+
+    {% else %}
+        
+        {% if user.role == "TC" %}
+            <h2 class="page-title">Teaches</h2>
+            <div class="courses">
+                {% for course in courses %}
+                    <a class="hide-link" href="{% url 'course' course_id=course.id %}">
+                        <div class="course">
+                            <div class="course-subject">{{ course.get_subject_display }}</div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+    {% endif %}
+    
+{% endblock %}

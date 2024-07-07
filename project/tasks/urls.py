@@ -12,5 +12,6 @@ urlpatterns = [
     path("courses", views.courses, name="courses"),
     path("enrollment/<int:course_id>", views.enrollment, name="enrollment"),
     path("newtask", views.newtask, name="newtask"),
-    path("hub", views.hub, name="hub"),
+    path("course/<int:course_id>", views.course, name="course"),
+    path("profile/<int:user_id>", views.profile, name="profile"),
 ]

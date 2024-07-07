@@ -10,13 +10,15 @@
     {% endif %}
     <div class="courses">
         {% for course in courses %}
-            <div class="course">
-                <div class="course-subject">{{ course.get_subject_display }}</div>
-                {% if course.description %}
-                    <div class="course-description">{{ course.description }}</div>
-                {% endif %}
-                <div class="course-teacher">{{ course.teacher }}</div>
-            </div>
+            <a class="hide-link" href="{% url 'course' course_id=course.id %}">
+                <div class="course">
+                    <div class="course-subject">{{ course.get_subject_display }}</div>
+                    {% if course.description %}
+                        <div class="course-description">{{ course.description }}</div>
+                    {% endif %}
+                    <div class="course-teacher">{{ course.teacher }}</div>
+                </div>
+            </a>
         {% endfor %}
     </div>
 {% endblock %}

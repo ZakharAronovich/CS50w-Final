@@ -40,6 +40,12 @@ def courses(request):
     return render(request, "courses.html", context)
 
 
+def course(request, course_id):
+    course = Course.objects.get(pk=course_id)
+    context = {"course": course}
+    return render(request, "course.html", context) 
+
+
 @students_only
 def enrollment(request, course_id):
     student = Student.objects.get(user=request.user)
@@ -51,7 +57,7 @@ def enrollment(request, course_id):
         student.courses.add(course)
     
     student.save()
-    return render(request, "courses.html")
+    return redirect("hub")
 
 
 @teachers_only
@@ -68,12 +74,21 @@ def newtask(request):
 
 
 @authenticated_only
-def hub(request):
-    if request.user.role == "TC":
-        pass
-    elif request.user.role == "ST":
-        pass
-    return render(request, "hub.html")
+def profile(request, user_id):
+    user = User.objects.get(pk=user_id)
+    
+    if user.role == "TC":
+        teacher = Teacher.objects.get(user=user)
+        courses = Course.objects.filter(teacher=teacher)
+        context = {"courses": courses}
+        
+    elif user.role == "ST":
+        student = Student.objects.get(user=user)
+        courses = student.courses.all()
+        tasks = Task.objects.filter(course__in=courses)
+        context = {"courses": courses, "tasks": tasks}
+     
+    return render(request, "profile.html", context)
 
 
 @unauthenticated_only
