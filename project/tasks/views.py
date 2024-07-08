@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 
-from .models import User, Teacher, Student, Course, Task
+from .models import User, Teacher, Student, Course, Task, Tag
 from .forms import RegistrationForm, TaskCreationForm
 from .decorators import authenticated_only, unauthenticated_only, teachers_only, students_only
 
@@ -32,11 +32,14 @@ def tasks(request):
     return render(request, "tasks.html", context)
 
 
-@students_only
-def courses(request):
-    courses = Course.objects.all()
-    student = Student.objects.get(user=request.user)
-    context = {"courses": courses, "student": student}
+def courses(request, tag_id=None):
+    if tag_id:
+        courses = Course.objects.filter(tags=tag_id)
+        tag = Tag.objects.get(pk=tag_id)
+        context = {"courses": courses, "tag": tag}
+    else:  
+        context = {"courses": Course.objects.all()}
+
     return render(request, "courses.html", context)
 
 
@@ -81,7 +84,7 @@ def profile(request, user_id):
         teacher = Teacher.objects.get(user=user)
         courses = Course.objects.filter(teacher=teacher)
         context = {"courses": courses}
-        
+
     elif user.role == "ST":
         student = Student.objects.get(user=user)
         courses = student.courses.all()

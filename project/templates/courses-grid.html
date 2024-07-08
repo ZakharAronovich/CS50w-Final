@@ -1,0 +1,29 @@
+{% block body %}
+    <div class="courses">
+        {% for course in courses %}  
+            <div class="course-grid">
+            <a class="hide-link" href="{% url 'course' course_id=course.id %}">
+                {% if course.image %}
+                    <img src="{{ course.image.url }}" class="course-grid-image">
+                {% else %}
+                    <img src="./media/images/thumbnail_1.png" class="course-grid-image">
+                {% endif %}
+                <div class="course-grid-text">
+                    <div class="course-grid-title">{{ course.title }}</div>
+            </a>
+                    <div class="course-grid-teacher">{{ course.teacher }}</div>
+                    
+                    <div class="course-grid-tags">
+                        {% for tag in course.tags.all %}   
+                            <div class="course-grid-tag">
+                                <a href="{% url 'courses' tag_id=tag.id %}" class="hide-link">
+                                    {{ tag.get_name_display }}
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

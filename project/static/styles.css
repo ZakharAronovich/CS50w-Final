@@ -178,11 +178,43 @@ select:focus {
     padding: 0rem 1rem;
 }
 
-.course {
+.course-grid {
     padding: 1rem;
     font-size: 1.2rem;
     border: 1px solid var(--border-color);
     border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.course-grid-image {
+    max-width: 5rem;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.course-grid-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.course-grid-title {
+    font-size: 1.5rem;
+}
+
+.course-grid-tags {
+    display: flex;
+    flex-direction: row;
+}
+
+.course-grid-tag {
+    font-size: 0.8rem;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
 }
 
 .errorlist {

@@ -15,21 +15,16 @@
                     {{ user.bio }}
                 {% endif %}
             </div>
+            <div class="profile-text-info">
+                Member for {{ user.member_for }}
+            </div>
         </div>
     </div>
 
     {% if request.user == user %}
-    
+
         <h2 class="page-title">Courses</h2>
-        <div class="courses">
-            {% for course in courses %}
-                <a class="hide-link" href="{% url 'course' course_id=course.id %}">
-                    <div class="course">
-                        <div class="course-subject">{{ course.get_subject_display }}</div>
-                    </div>
-                </a>
-            {% endfor %}
-        </div>
+        {% include "courses-grid.html" %}
 
         {% if tasks %}
             <h2 class="page-title">Tasks</h2>

@@ -15,6 +15,11 @@ class User(AbstractUser):
     bio = models.TextField(max_length=256, blank=True, null=True)
 
 
+    @property 
+    def member_for(self):
+        return timesince.timesince(self.date_joined)
+
+
 class Teacher(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, 
@@ -26,8 +31,8 @@ class Teacher(models.Model):
         return f"{self.user.first_name} {self.user.last_name}"
 
 
-class Course(models.Model):
-    SUBJECT_CHOICES = (
+class Tag(models.Model):
+    TAG_CHOICES = (
         ("ALG", "Algebra"),
         ("ART", "Art"),
         ("BIO", "Biology"),
@@ -38,16 +43,26 @@ class Course(models.Model):
         ("PE", "PE")
     )
 
-    subject = models.CharField(max_length=3, default=None, choices=SUBJECT_CHOICES)
+    name = models.CharField(max_length=3, choices=TAG_CHOICES)
+
+
+    def __str__(self):
+        return f"{self.name} Tag"
+
+
+class Course(models.Model):
+    title = models.CharField(max_length=50, default=None, null=True)
+    image = models.ImageField(default=None,blank=True, null=True, upload_to="images/")
     description = models.TextField(max_length=512, default=None, null=True)
     teacher = models.ForeignKey(
         Teacher, on_delete=models.PROTECT, 
         related_name="courses_by_teacher"
     )
+    tags = models.ManyToManyField(Tag, related_name="courses_by_tag")
 
 
     def __str__(self):
-        return self.get_subject_display()
+        return self.title
 
 
 class Student(models.Model):
@@ -73,7 +88,6 @@ class Task(models.Model):
     datetime = models.DateTimeField(auto_now_add=True)
     deadline = models.DateTimeField()
     text = models.TextField(max_length=1024)
-
 
     @property
     def time_left(self):
