@@ -47,7 +47,7 @@ class Tag(models.Model):
 
 
     def __str__(self):
-        return f"{self.name} Tag"
+        return self.get_name_display()
 
 
 class Course(models.Model):

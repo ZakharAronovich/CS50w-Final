@@ -1,0 +1,83 @@
+{% load widget_tweaks %}
+
+
+{% block body %}
+
+    <div class="course-form-div">
+        <form method="POST" id="course-form">
+            {% csrf_token %}
+            
+            <div class="course-form-title">
+
+                <h1 class="page-title">What will the name of<br>the Course be?</h1>
+                <div class="course-form-title-input-div">
+
+                    {% render_field form.title class="course-form-title-input" %}
+
+                    <button class="form-navigation-button" 
+                        id="form-nav-button-1" type="button" 
+                        onclick="courseFormNavigation(event)"
+                    >
+                        <i class="bi bi-arrow-right-square-fill"></i>
+                    </button>
+
+                </div>
+
+            </div>
+            
+            <div class="course-form-description">
+
+                <h1 class="page-title">Provide a succinct description of the Course</h1>
+                <div class="course-form-description-div">
+
+                    {% render_field form.description %}
+
+                    <button class="form-navigation-button" 
+                        id="form-nav-button-2" type="button" 
+                        onclick="courseFormNavigation(event)"
+                    >
+                        <i class="bi bi-arrow-right-square-fill"></i>
+                    </button>
+
+                </div>  
+
+            </div>
+
+            <div class="course-form-image">
+
+                <h1 class="page-title">Select a thumbnail for the Course</h1>
+                <div class="course-form-image-div">
+
+                    {% render_field form.image %}
+                    <button class="form-navigation-button" 
+                        id="form-nav-button-3" type="button" 
+                        onclick="courseFormNavigation(event)"
+                    >
+                        <i class="bi bi-arrow-right-square-fill"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="course-form-tags">
+
+                <h1 class="page-title">Select tags that apply to the Course:</h1>
+                <div class="course-form-tags-grid">
+                    {% for tag in tags %}
+                        <div class="course-form-tag">{{ tag.get_name_display }}</div>
+                    {% endfor %}
+                </div>
+                
+                <h1 class="page-title">...or create a new tag:</h1>
+                <div class="course-form-tags-input-div">
+                    <input>
+                    <button type="button">Create</button>
+                </div>
+            </div>
+        </form>
+
+        <button class="form-button" id="course-form-button" form="course-form">Publish</button>
+    </div>
+
+{% endblock %}

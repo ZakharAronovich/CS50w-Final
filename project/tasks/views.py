@@ -3,7 +3,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 
 from .models import User, Teacher, Student, Course, Task, Tag
-from .forms import RegistrationForm, TaskCreationForm
+from .forms import RegistrationForm, TaskCreationForm, CourseCreationForm
 from .decorators import authenticated_only, unauthenticated_only, teachers_only, students_only
 
 
@@ -64,16 +64,27 @@ def enrollment(request, course_id):
 
 
 @teachers_only
-def newtask(request):
-    form = TaskCreationForm(request.POST or None)
-    
+def create(request, entry_type):
+
+    if entry_type == "course":
+        tags = Tag.objects.all()
+        form = CourseCreationForm(request.POST or None)
+        context = {"form": form, "entry_type": entry_type, "tags": tags}
+        
+    elif entry_type == "task": 
+        form = TaskCreationForm(request.POST or None)
+        context = {"form": form, "entry_type": entry_type}
+        
     if request.method == "POST" and form.is_valid():
         form.instance.teacher = Teacher.objects.get(user=request.user)
         form.save()
-        return render(request, "tasks.html", context)
+        
+        if entry_type == "course":
+            return render(request, "courses.html", context)
+        elif entry_type == "task":
+            return render(request, "tasks.html", context)
     
-    context = {"form": form}
-    return render(request, "newtask.html", context)
+    return render(request, "create.html", context)
 
 
 @authenticated_only

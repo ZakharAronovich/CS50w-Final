@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+
+{% block body %}
+
+    {% if entry_type == "course" %}
+        {% include "elements/courseform.html" %}
+    {% elif entry_type == "task" %}
+        {% include "elements/taskform.html" %}
+    {% endif %}
+
+{% endblock %}
