@@ -17,7 +17,15 @@ class User(AbstractUser):
 
     @property 
     def member_for(self):
-        return timesince.timesince(self.date_joined)
+        value = str(timesince.timesince(self.date_joined))
+        try:
+            return f"{value[:value.feed(",")]} left"
+        except:
+            return f"{value} left"
+        
+    @property
+    def name(self):
+        return f"{self.first_name.capitalize()} {self.last_name.capitalize()}"
 
 
 class Teacher(models.Model):
@@ -92,6 +100,25 @@ class Task(models.Model):
     @property
     def time_left(self):
         value = str(timesince.timeuntil(self.deadline))
+        try:
+            return f"{value[:value.feed(",")]} left"
+        except:
+            return f"{value} left"
+        
+
+class Announcement(models.Model):
+    course = models.ForeignKey(
+        Course, on_delete=models.CASCADE, 
+        related_name="announcements_by_course",
+        default=None
+    )
+    text = models.TextField(max_length=512)
+    datetime = models.DateTimeField(auto_now_add=True)
+
+
+    @property
+    def created(self):
+        value = str(timesince.timesince(self.datetime))
         try:
             return f"{value[:value.feed(",")]} left"
         except:

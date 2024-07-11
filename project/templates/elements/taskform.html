@@ -4,7 +4,7 @@
 {% block body %}
     <div class="task-form-div">
         <h1 class="page-title">New Task</h1>
-        <form method="POST" id="task-form">
+        <form method="POST" id="task-form" novalidate>
             {% csrf_token %}
             {% render_field form.course %}
             {% render_field form.deadline type="datetime-local" %}

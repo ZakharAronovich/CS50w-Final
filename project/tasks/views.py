@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 
-from .models import User, Teacher, Student, Course, Task, Tag
+from .models import User, Teacher, Student, Course, Task, Tag, Announcement
 from .forms import RegistrationForm, TaskCreationForm, CourseCreationForm
 from .decorators import authenticated_only, unauthenticated_only, teachers_only, students_only
+from .utils import announce_task
 
 
 @authenticated_only
@@ -77,12 +78,15 @@ def create(request, entry_type):
         context = {"form": form, "entry_type": entry_type}
         
     if request.method == "POST" and form.is_valid():
-        form.instance.teacher = Teacher.objects.get(user=request.user)
         form.save()
         
         if entry_type == "course":
             return render(request, "courses.html", context)
+        
         elif entry_type == "task":
+            # Create an announcement about new task for the course
+            announce_task(request.POST["course"])
+
             return render(request, "tasks.html", context)
     
     return render(request, "create.html", context)
