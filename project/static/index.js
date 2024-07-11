@@ -40,21 +40,30 @@ function toggleElements(prevElPointer, nextElPointer) {
 
 
 // Navigate through the course form
-function courseFormNavigation(event) {
-    const navButton = event.target.parentNode;
+function courseFormNavigation(navButton) {
     const submitButton = document.getElementById("course-form-button");
-
-    if (navButton.id == "form-nav-button-1") {
+    
+    if (navButton.dataset.step == "1") {
         toggleElements(".course-form-title", ".course-form-description");
 
-    } else if (navButton.id == "form-nav-button-2") {
+    } else if (navButton.dataset.step == "2") {
         toggleElements(".course-form-description", ".course-form-image");
 
-    } else if (navButton.id == "form-nav-button-3") {
+    } else if (navButton.dataset.step == "3") {
         toggleElements(".course-form-image", ".course-form-tags");
 
         // At the last section, show the submit button
         submitButton.style.display = "flex";
     }
 
+}
+
+
+// Add and remove tags in the course form
+function toggleTag(tagElement) {
+    if (tagElement.className == "tag") {
+        tagElement.className = "tag active";
+    } else {
+        tagElement.className = "tag";
+    }
 }

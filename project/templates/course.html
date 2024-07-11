@@ -2,9 +2,35 @@
 
 
 {% block body %}
-    <h1 class="page-title">{{ course.get_subject_display }}</h1>
-    <div class="course-page-description">
-        {{ course.description }}    
+
+    <div class="course-page-div">
+        
+        <img class="course-page-image" src="{{ course.image.url }}">
+
+        <div class="course-page-text">
+
+            <h1 class="course-page-title">
+                {{ course.title }}
+            </h1>
+    
+            <div class="course-page-description">
+                {{ course.description }}    
+            </div>
+
+            <div class="course-page-teacher">
+                Taught by: <a class="hide-link" href="{% url 'profile' user_id=course.teacher.user.id %}">{{ course.teacher }}</a>
+            </div> 
+
+            <div class="course-page-tags">
+                {% for tag in course.tags.all %}
+                    <div class="tag">
+                        {{ tag.get_name_display }}
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
     </div>
 
     <a class="hide-link" href="{% url 'enrollment' course_id=course.id %}">
@@ -16,9 +42,5 @@
             {% endif %}
         </button>
     </a>
-
-    <div class="course-page-teacher">
-        Taught by: <a class="hide-link" href="{% url 'profile' user_id=course.teacher.user.id %}">{{ course.teacher }}</a>
-    </div> 
     
 {% endblock %}

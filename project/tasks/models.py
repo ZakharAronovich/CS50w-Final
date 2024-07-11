@@ -93,6 +93,6 @@ class Task(models.Model):
     def time_left(self):
         value = str(timesince.timeuntil(self.deadline))
         try:
-            return f"{value[:value.index(",")]} left"
+            return f"{value[:value.feed(",")]} left"
         except:
             return f"{value} left"

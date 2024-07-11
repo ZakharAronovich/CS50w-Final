@@ -4,6 +4,7 @@
 {% block body %}
 
     <div class="course-form-div">
+
         <form method="POST" id="course-form">
             {% csrf_token %}
             
@@ -14,12 +15,9 @@
 
                     {% render_field form.title class="course-form-title-input" %}
 
-                    <button class="form-navigation-button" 
-                        id="form-nav-button-1" type="button" 
-                        onclick="courseFormNavigation(event)"
-                    >
-                        <i class="bi bi-arrow-right-square-fill"></i>
-                    </button>
+                    <i class="bi bi-arrow-right-square-fill" 
+                        data-step="1" onclick="courseFormNavigation(this)"
+                    ></i>
 
                 </div>
 
@@ -32,12 +30,9 @@
 
                     {% render_field form.description %}
 
-                    <button class="form-navigation-button" 
-                        id="form-nav-button-2" type="button" 
-                        onclick="courseFormNavigation(event)"
-                    >
-                        <i class="bi bi-arrow-right-square-fill"></i>
-                    </button>
+                    <i class="bi bi-arrow-right-square-fill" 
+                        data-step="2" onclick="courseFormNavigation(this)"
+                    ></i>
 
                 </div>  
 
@@ -49,12 +44,9 @@
                 <div class="course-form-image-div">
 
                     {% render_field form.image %}
-                    <button class="form-navigation-button" 
-                        id="form-nav-button-3" type="button" 
-                        onclick="courseFormNavigation(event)"
-                    >
-                        <i class="bi bi-arrow-right-square-fill"></i>
-                    </button>
+                    <i class="bi bi-arrow-right-square-fill" 
+                        data-step="3" onclick="courseFormNavigation(this)"
+                    ></i>
 
                 </div>
 
@@ -63,9 +55,13 @@
             <div class="course-form-tags">
 
                 <h1 class="page-title">Select tags that apply to the Course:</h1>
-                <div class="course-form-tags-grid">
+                <div class="tags-grid">
                     {% for tag in tags %}
-                        <div class="course-form-tag">{{ tag.get_name_display }}</div>
+                        <div class="tag" data-name="{{ tag.name }}"
+                            onclick="toggleTag(this)"
+                        >
+                            {{ tag.get_name_display }}
+                        </div>
                     {% endfor %}
                 </div>
                 
@@ -78,6 +74,7 @@
         </form>
 
         <button class="form-button" id="course-form-button" form="course-form">Publish</button>
+        
     </div>
 
 {% endblock %}

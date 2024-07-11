@@ -7,8 +7,9 @@ from .forms import RegistrationForm, TaskCreationForm, CourseCreationForm
 from .decorators import authenticated_only, unauthenticated_only, teachers_only, students_only
 
 
-def index(request):
-    return render(request, "index.html")
+@authenticated_only
+def feed(request):
+    return render(request, "feed.html")
 
 
 @teachers_only
@@ -139,7 +140,7 @@ def register(request):
                 student.save()
 
             login(request, user)
-            return redirect("index")
+            return redirect("feed")
         
     context = {"form": form}
     return render(request, "register.html", context)
@@ -158,7 +159,7 @@ def login_view(request):
         # Attempt to log the user in
         if user is not None:
             login(request, user)
-            return redirect("index")
+            return redirect("feed")
         else:
             context = {"message": "User does not exist.", "form": form}
             return render(request, "login.html", context)
@@ -170,4 +171,4 @@ def login_view(request):
 @authenticated_only
 def logout_view(request):
     logout(request)
-    return redirect("index")
+    return redirect("feed")
