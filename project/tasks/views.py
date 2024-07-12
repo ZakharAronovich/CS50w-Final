@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 
-from .models import User, Teacher, Student, Course, Task, Tag, Announcement
+from .models import User, Teacher, Student, Course, Task, Tag, Notification, Review
 from .forms import RegistrationForm, TaskCreationForm, CourseCreationForm
 from .decorators import authenticated_only, unauthenticated_only, teachers_only, students_only
 from .utils import announce_task
@@ -10,7 +10,9 @@ from .utils import announce_task
 
 @authenticated_only
 def feed(request):
-    return render(request, "feed.html")
+    notifications = Notification.objects.all()
+    context = {"notifications": notifications}
+    return render(request, "feed.html", context)
 
 
 @teachers_only
@@ -47,7 +49,9 @@ def courses(request, tag_id=None):
 
 def course(request, course_id):
     course = Course.objects.get(pk=course_id)
-    context = {"course": course}
+    reviews = Review.objects.filter(course=course)
+    
+    context = {"course": course, "reviews": reviews}
     return render(request, "course.html", context) 
 
 
@@ -84,7 +88,7 @@ def create(request, entry_type):
             return render(request, "courses.html", context)
         
         elif entry_type == "task":
-            # Create an announcement about new task for the course
+            # Announce new task was added to the course
             announce_task(request.POST["course"])
 
             return render(request, "tasks.html", context)

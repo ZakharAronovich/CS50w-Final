@@ -1,11 +1,15 @@
 {% extends "layout.html" %}
-
+{% load filters %}
 
 {% block body %}
 
     <div class="course-page-div">
         
-        <img class="course-page-image" src="{{ course.image.url }}">
+        {% if course.image %}
+            <img class="course-page-image" src="{{ course.image.url }}">
+        {% else %}
+            <img class="course-page-image" src="../media/images/thumbnail_1.png">
+        {% endif %}
 
         <div class="course-page-text">
 
@@ -42,5 +46,30 @@
             {% endif %}
         </button>
     </a>
+
+    <h2 class="page-title">Reviews</h2>
+    <div class="reviews">
+        {% for review in reviews %}
+            <div class="review">
+                <div class="review-rating">
+                    {% for star in 0|range:review.rating %}
+                        <i class="bi bi-star-fill"></i>
+                    {% endfor %}
+                </div>
+                <div class="review-author">
+                    {% if review.author.user.image %}
+                        <img src="{{ review.author.user.image.url }}" class="review-author-image">
+                    {% endif %}
+                    <div class="review-author-text">
+                        {{ review.author.user.name }}
+                        {{ review.created }}
+                    </div>
+                </div>
+                <div class="review-text">
+                    {{ review.text }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
     
 {% endblock %}

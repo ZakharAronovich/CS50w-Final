@@ -35,9 +35,9 @@
                         Create
                         </a>
                         <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{% url 'create' entry_type='task' %}">Task</a></li>
-                        <li><a class="dropdown-item" href="{% url 'create' entry_type='post' %}">Post</a></li>
-                        <li><a class="dropdown-item" href="{% url 'create' entry_type='course' %}">Course</a></li>
+                            <li><a class="dropdown-item" href="{% url 'create' entry_type='task' %}">Task</a></li>
+                            <li><a class="dropdown-item" href="{% url 'create' entry_type='post' %}">Post</a></li>
+                            <li><a class="dropdown-item" href="{% url 'create' entry_type='course' %}">Course</a></li>
                         </ul>
                     </li>
                 {% endif %} 
@@ -47,12 +47,39 @@
             <ul class="navbar-nav ms-auto">    
                 
                 {% if request.user.is_authenticated %}
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Notifications
+                        </a>
+                        <ul class="dropdown-menu" id="dropdown-notifications">
+                            {% if notifications %}
+                                {% for notification in notifications %}
+                                    <li><a class="dropdown-item" href="#">
+                                        <div class="dropdown-notification">
+                                            <img src="{{ notification.course.image.url }}">
+                                            <div class="dropdown-notification-text">
+                                                <b>{{ notification.course.title.title }}</b>
+                                                {{ notification.text }}
+                                            </div>  
+                                            
+                                        </div>
+                                    </a></li>
+                                {% endfor %}
+                            {% else %}
+                                <li><a class="dropdown-item" href="#">No notifications</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'profile' user_id=request.user.id %}">My hub</a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
                     </li>
+
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">Log In</a>

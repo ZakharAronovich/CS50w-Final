@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timesince
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class User(AbstractUser):
@@ -19,9 +20,9 @@ class User(AbstractUser):
     def member_for(self):
         value = str(timesince.timesince(self.date_joined))
         try:
-            return f"{value[:value.feed(",")]} left"
+            return value[:value.find(",")]
         except:
-            return f"{value} left"
+            return value
         
     @property
     def name(self):
@@ -101,15 +102,15 @@ class Task(models.Model):
     def time_left(self):
         value = str(timesince.timeuntil(self.deadline))
         try:
-            return f"{value[:value.feed(",")]} left"
+            return f"{value[:value.find(",")]} left"
         except:
             return f"{value} left"
         
 
-class Announcement(models.Model):
+class Notification(models.Model):
     course = models.ForeignKey(
         Course, on_delete=models.CASCADE, 
-        related_name="announcements_by_course",
+        related_name="notifications_by_course",
         default=None
     )
     text = models.TextField(max_length=512)
@@ -120,6 +121,25 @@ class Announcement(models.Model):
     def created(self):
         value = str(timesince.timesince(self.datetime))
         try:
-            return f"{value[:value.feed(",")]} left"
+            return value[:value.find(",")]
         except:
-            return f"{value} left"
+            return value
+        
+
+class Review(models.Model):
+    author = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    text = models.TextField(max_length=1024)
+    votes = models.IntegerField(default=0)
+    datetime = models.DateTimeField(auto_now_add=True)  
+
+
+    @property
+    def created(self):
+        value = str(timesince.timesince(self.datetime))
+        try:
+            return f"{value[:value.find(",")]} ago"
+        except:
+            return f"{value} ago"
+
